@@ -1,0 +1,128 @@
+<style>
+    .footer table th {
+        padding-right: 15px;
+    }
+
+    .footer>div h3 {
+        text-transform: uppercase;
+        font-size: 20px;
+        text-align: start;
+    }
+
+    .footer>div ul li {
+        font-size: 14px;
+        padding: 3px 0;
+    }
+
+    .footer>div ul {
+        margin: 0;
+        padding: 0px 0px 0px 20px;
+    }
+
+    .footer>div ul a {
+        text-decoration: none;
+        color: #000;
+    }
+
+    .footer>div ul li:hover {
+        color: rgb(219, 52, 68);
+    }
+</style>
+{% load static %}
+<div class="footer py-0">
+    <div class="container">
+        <div class=" d-flex justify-content-around col-sm-12 col-md-12 col-lg-12">
+            <div class="d-flex gap-3 col-sm-8 col-md-12 col-lg-12 overflow-hidden flex-wrap justify-content-between">
+                <div class="p-2 col-sm-4 col-md-4 col-lg-3">
+                    <div>
+                        <h3>NEP HOT Pvt. Ltd.</h3>
+                    </div>
+                    <div class="py-3">
+                        {% if header.header_image_left and header.header_image_left.url %}
+                        <img src="{{ header.header_image_left.url }}" alt="" width="150px" height="150px">
+                        {% else %}
+                        <!-- <img src="" alt=""> -->
+                        {% endif %}
+                    </div>
+                    <div class="py-2">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <th>Address:</th>
+                                    <td>
+                                        {% if otherdetails.address %}
+                                        {{ otherdetails.address }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Phone:</th>
+                                    <td>
+                                        {% if otherdetails.phone_number %}
+                                        {{ otherdetails.phone_number }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Email:</th>
+                                    <td>
+                                        {% if otherdetails.email %}
+                                        {{ otherdetails.email }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Reg No:</th>
+                                    <td>XXXXXXXXXX</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="py-3">
+                        <ul class="list-unstyled d-flex p-0 gap-2 align-items-center">
+                            <a href="https://facebook.com" target="_blank"><i class="fa-brands fa-square-facebook fs-3"
+                                    style="color: #3ba0ed;"></i></a>
+                            <a href="https://www.instagram.com" target="_blank">
+                                <li class="fa-brands fa-instagram fs-3" style="color: #ff7b00;"></li>
+                            </a>
+                            <a href="https://www.youtube.com" target="_blank">
+                                <li class="fa-brands fa-youtube fs-3" style="color: #ff0000;"></li>
+                            </a>
+                            <a href="https://twitter.com" target="_blank">
+                                <li class="fa-brands fa-twitter fs-3" style="color: #74c0fc;"></li>
+                            </a>
+                            <a href="https://www.google.com" target="_blank">
+                                <li class="fa-brands fa-google fs-3" style="color: #d74545;"></li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+                <div class="p-2 col-sm-4 col-md-6 col-lg-2">
+                    <div>
+                        <h3>Information &amp; Complaints</h3>
+                    </div>
+                    <div class="d-flex justify-content-start ">
+                        <img src="{% static 'images/SK.png' %}" width="150px" height="150px" alt="person">
+                    </div>
+                    <div>
+                        <p class="fs-6">For any information and complaint, please contact {{user}}, {{otherdetails.phone_number}}
+                            </p>
+                    </div>
+                </div>
+
+                <div class="p-2 col-sm-4 col-md-12 col-lg-2">
+                    <div>
+                        <h3>Visit our store</h3>
+                    </div>
+                    <div class="col-12">
+                        <iframe
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3861449.4450566727!2d81.48373222852634!3d28.376724721110232!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3995e8c77d2e68cf%3A0x34a29abcd0cc86de!2sNepal!5e1!3m2!1sen!2snp!4v1737963668820!5m2!1sen!2snp"
+                            width="100%" height="250px" style="border:0;" allowfullscreen="" loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

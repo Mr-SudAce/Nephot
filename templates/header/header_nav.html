@@ -1,0 +1,53 @@
+<style>
+    .nav li a {
+        color: black;
+        border-left: 1px solid grey;
+    }
+
+    .nav li:hover {
+        background-color: rgb(219, 52, 68);
+    }
+
+    .nav li a:hover {
+        color: white;
+    }
+
+    .nav-item .nav-link {
+        color: black;
+        padding: 10px 20px;
+        text-decoration: none;
+    }
+
+    .nav li:first-child a {
+        border-left: none;
+    }
+
+    .nav li:last-child a {
+        border-right: none;
+    }
+</style>
+
+<div class="header-nav bg-light">
+    <div class="container">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <div class="col-sm-12 col-md-12 col-lg-12 d-flex flex-wrap bg-white">
+                <div class="bg-dark col-sm-6 col-md-4 col-lg-3">
+                    <div class="d-flex py-1">
+                        <span class="fs-5 m-auto text-light">Categories</span>
+                        <i class="bi bi-list fs-5 m-auto text-light"></i>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-md-8 col-lg-9 m-auto">
+                    <div class="">
+                        <ul class="nav bg-light d-flex flex-wrap m-auto bg-white">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{% url 'home' %}"><i class="bi bi-house-fill px-1"></i>Home</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
