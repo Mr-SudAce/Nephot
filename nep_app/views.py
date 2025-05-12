@@ -203,16 +203,14 @@ def search_query(request):
 # productDetail
 def product_itemView_detail(request, id):
     product_itemView_detail = ProductModel.objects.get(id=id)
-    products = ProductModel.objects.all()
+    products = ProductModel.objects.exclude(id=id)
     cart_itm = CartItemModel.objects.all()
     cart = CartModel.objects.get(user=request.user)
-    product_in_cart = CartItemModel.objects.filter(
-        cart=cart, product=product_itemView_detail
-    ).exists()
+    product_in_cart = CartItemModel.objects.filter(cart=cart, product=product_itemView_detail).exists()
     context = {
         "product_detailV": product_itemView_detail,
         "product_in_cart": product_in_cart,
-        "products": products,
+        "similarproduct": products,
         "cart_itm": cart_itm,
     }
     return render(request, "content/product_detail.html", context)
