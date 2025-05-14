@@ -117,7 +117,10 @@
     /* Additional styles */
     .card-container {
         cursor: pointer;
-        /* Indicate that the card is clickable */
+    }
+
+    .cards::-webkit-scrollbar {
+        display: none;
     }
 </style>
 
@@ -169,14 +172,7 @@
                     </div>
 
 
-                    <!-- card carousel -->
                     <div class="col-sm-8 col-md-8 col-lg-10 d-flex">
-                        <!-- <button type="button" class="arrow left" onclick="slideLeft()"> &#10094;</button> -->
-                        <style>
-                            .cards::-webkit-scrollbar{
-                                display: none;
-                            }
-                        </style>
                         <div class="cards col-sm-12 col-md-12 col-lg-12 gap-4 d-flex overflow-hidden overflow-scroll px-4">
                             {% for products in category.productcategory.all %}
                             <div class="col-sm-12 col-md-12 col-lg-3 align-content-center">
@@ -192,7 +188,8 @@
                                         </div>
 
                                         <div class="name">
-                                            <h5 class="fs-3 position-absolute" style="top: 10px; width: 100%;">{{products.product_name}}</h5>
+                                            <h5 class="fs-3 position-absolute" style="top: 10px; width: 100%;">
+                                                {{products.product_name}}</h5>
                                             <br>
                                             <p>{{ products.product_description }}</p>
                                             <p>Rs.800 <strike class="text-danger">{{ products.product_price }}</strike>
@@ -208,10 +205,7 @@
                             {% endfor %}
                         </div>
 
-                        <!-- <button type="button" class="arrow right" onclick="slideRight()"> &#10095; </button> -->
-
                     </div>
-                    <!-- card carousel -->
 
 
                 </div>

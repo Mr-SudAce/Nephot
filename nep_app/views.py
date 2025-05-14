@@ -83,6 +83,8 @@ def home(request):
         cart_items = CartItemModel.objects.filter(cart=cart) if cart else []
     else:
         cart_items = []
+        
+    cart_items = [item for item in cart_items if item.product]
 
     # total_items_count = cart_items.count()
     total_items_count = (
@@ -102,7 +104,6 @@ def home(request):
         "otherdetails": otherdetails,
         "advertisement": advertisement,
     }
-    print("home add ",advertisement)
     return render(request, "home.html", context)
 
 
@@ -114,13 +115,11 @@ def add_to_cart(request, id):
     if request.user.is_authenticated:
         cart, _ = CartModel.objects.get_or_create(user=request.user, is_paid=False)
         cart_item = CartItemModel.objects.filter(cart=cart, product=product).first()
-
         if cart_item:
             cart_item.quantity += 1
             cart_item.save()
         else:
             CartItemModel.objects.create(cart=cart, product=product, quantity=1)
-
     else:
         cart = request.session.get("cart", {})
 
@@ -133,6 +132,9 @@ def add_to_cart(request, id):
             }
         request.session["cart"] = cart
     return redirect("home")
+
+
+
 def delete_cart_item(request, cart_item_id):
     if request.method == "POST":
         cart_item = get_object_or_404(CartItemModel, id=cart_item_id)
@@ -163,13 +165,17 @@ def cart_detail(request):
     total_items_count = (
         len(cart_items) if isinstance(cart_items, list) else cart_items.count()
     )
-    grand_total = sum(item.total_price() for item in cart_items)
+    grand_total = sum(item.total_price() if item.product else 0 for item in cart_items)
     context = {
         "cartdet": cart_det,
         "total_items_count": total_items_count,
         "grand_total": grand_total,
     }
     return render(request, "content/cart_detail.html", context)
+
+
+
+
 def update_all_cart_details(request):
     if request.method == "POST":
         for key, value in request.POST.items():
@@ -227,6 +233,18 @@ def update_cart_quantity(request, id):
                 cart_item.quantity = quantity
                 cart_item.save()
             return redirect("product_itemView_detail", id=id)
+
+
+def filter_by_subcategory(request, subcategory_id):
+    subcategory = get_object_or_404(Sub_CategoryModel, id=subcategory_id)
+    products = ProductModel.objects.filter(pro_sub_category=subcategory)
+    category = subcategory.category
+
+    return render(request, 'content/fashion.html', {
+        'category': category,
+        'subcategory': subcategory,
+        'products': products,
+    })
 
 
 

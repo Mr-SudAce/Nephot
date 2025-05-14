@@ -62,7 +62,9 @@ class CartItemModel(models.Model):
     quantity = models.PositiveIntegerField(default=1,)
 
     def total_price(self):
-        return float(self.product.product_price) * self.quantity
+        if self.product and self.product.product_price is not None:
+            return self.product.product_price * self.quantity
+        return 0
 
     def __str__(self) -> str:
         return f"{self.cart} - {self.quantity}"

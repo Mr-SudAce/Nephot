@@ -7,7 +7,11 @@
 <div id="image" class="col-sm-12 col-md-8 col-lg-7">
     {% for image in images %}
     <div class="imageSlide">
-        <img src="{{ image.image.url }}" alt="Image" height="500px" width="100%">
+        {% if image.image %}
+        <img src="{{ image.image.url }}" alt="Image" class="img-fluid custom-slide">
+        {% else %}
+        <img src="{% static 'images/default_image.png' %}" alt="slide" class="img-fluid fallback-img">
+        {% endif %}
     </div>
     {% endfor %}
 </div>

@@ -142,20 +142,22 @@
                     <img src="{% static 'images/favicon.jpg' %}" alt="TechSpot" style="width: 90px;">
                     {% endif %} -->
                 </div>
-                <div class="d-flex col-sm-12 col-md-8 col-lg-7">
+
+                <!-- Search Box -->
+                <div class="d-flex col-sm-12 col-md-8 col-lg-7 justify-content-center">
                     <div class="d-flex">
-                        <select class="form-control rounded-0 m-auto bg-light" style="width: 150px;">
+                        <!-- <select class="form-control rounded-0 m-auto bg-light" style="width: 150px;">
                             <option value="" class="fs-6">All Category ⏷ </option>
                             {% for category in categories %}
                             {% for subcat in category.subcategories.all %}
                             <option value=""> <a href="#{{category_name}}">{{subcat.sub_category_name}}</a></option>
                             {% endfor %}
                             {% endfor %}
-                        </select>
+                        </select> -->
 
                         <form action="{% url 'search_query' %}" method="get" class="d-flex">
                             <input class="form-control rounded-0 m-auto border-gray" style="width: 400px;" type="search"
-                                name="search_query" id="search_query" placeholder="I'm Searching For.........">
+                                name="search_query" id="search_query" placeholder="Searching For.........">
                             <button type="submit"
                                 class="btn btn-danger border border-1 border-danger rounded-0 align-items-center m-auto d-flex">
                                 <i class="bi bi-search"></i>
@@ -164,6 +166,7 @@
                     </div>
 
                 </div>
+                <!-- Cart -->
                 <div class=" bg-light-subtle d-flex col-sm-12 col-md-2 col-lg-2">
                     <div class="d-flex align-items-center m-auto border gap-2">
                         <div class="d-flex flex-column align-items-center" style="width: 138px;">
@@ -213,11 +216,11 @@
                                                         </div>
                                                         <div class="d-flex">
                                                             <p class="m-0">Quantity:</p>
-                                                            <span class="px-2">{{cart_item.quantity}}</span>
+                                                            <span class="px-2">{{ cart_item.quantity }}</span>
                                                         </div>
                                                         <div class="d-flex">
                                                             <p class="m-0">Total:</p>
-                                                            <span class="px-2">Rs.{{cart_item.total_price}}</span>
+                                                            <span class="px-2">Rs.{{ cart_item.total_price }}</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -234,7 +237,8 @@
                                             <a id="see_all" href="{% url 'cart_Detail' %}">See all</a>
                                         </div>
                                         <div class="d-flex position-relative gap-2" style="align-items: center;">
-                                            <!-- <button type="submit" class="chkot btn btn-outline-success m-0">CheckOut</button> -->
+                                            <button type="submit"
+                                                class="chkot btn btn-outline-success m-0">CheckOut</button>
                                             <div class="d-flex flex-column">
                                                 <span class="text-dark text-start">Total: </span>
                                                 <span class="text-success">Rs. {{ grand_total }}</span>

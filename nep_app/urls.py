@@ -20,6 +20,9 @@ urlpatterns = [
     path("update-cart/<int:id>/", update_cart_quantity, name="update_cart_quantity"),
     #
     #
+    #
+    path('subcategory/<int:subcategory_id>/', filter_by_subcategory, name='filter_by_subcategory'),
+    #
     # D_Content [add function]
     path("dashboard/add-product/", add_product, name="add_product"),
     path("dashboard/add-category/", add_category, name="add_category"),

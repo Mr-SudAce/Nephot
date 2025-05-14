@@ -198,7 +198,12 @@ Product Detail
 <div class="row">
     <div class="col-md-5">
         <div class="main-img">
+            {% if product_detailV.product_image %}
             <img class="img-fluid" src=" {{product_detailV.product_image.url}} " alt="Product Images">
+            {% else %}
+            <img src="{% static 'images/default_image.png' %}" alt="Default image">
+            {% endif %}
+
         </div>
     </div>
     <div class="col-md-7">
@@ -266,7 +271,7 @@ Product Detail
     <p class="display-5">Similar Products</p>
     <div class="row">
         <div class="col-lg-12">
-            <div class="d-flex flex-wrap gap-1 justify-content-between">
+            <div class="d-flex flex-wrap gap-4 justify-content-start">
                 {% for product in similarproduct %}
                 <div class="card col-lg-2 d-flex justify-content-center"onclick="location.href='{% url 'product_itemView_detail' product.id %}'">
                     <div class="pic">
