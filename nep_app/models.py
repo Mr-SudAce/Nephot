@@ -54,18 +54,27 @@ class CartModel(models.Model):
 
 
 class CartItemModel(models.Model):
-    
-    cart = models.ForeignKey(CartModel, on_delete=models.CASCADE, related_name="cart_items")
-    product = models.ForeignKey(ProductModel, on_delete=models.SET_NULL, null=True, blank=True)
-    quantity = models.PositiveIntegerField(default=1,)
+    cart = models.ForeignKey(CartModel,on_delete=models.CASCADE,related_name="cart_items")
+    product = models.ForeignKey(ProductModel,on_delete=models.SET_NULL,null=True,blank=True,related_name="cart_items")
+    quantity = models.PositiveIntegerField(default=1)
+    unit_price = models.DecimalField(max_digits=10,decimal_places=2,null=True,blank=True,help_text="Snapshot of the price at the time the item was added")
+
+    def save(self, *args, **kwargs):
+        if self.product and not self.unit_price:
+            self.unit_price = self.product.product_price
+        super().save(*args, **kwargs)
 
     def total_price(self):
-        if self.product and self.product.product_price is not None:
+        if self.unit_price is not None:
+            return self.unit_price * self.quantity
+        elif self.product and self.product.product_price is not None:
             return self.product.product_price * self.quantity
         return 0
 
-    def __str__(self) -> str:
-        return f"{self.cart} - {self.quantity}"
+    def __str__(self):
+        product_name = self.product.product_name if self.product else "Deleted Product"
+        return f"{product_name} x {self.quantity} in Cart #{self.cart.id}"
+
 
 
 

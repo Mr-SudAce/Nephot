@@ -50,7 +50,7 @@
                         value="{{ cartdetail.quantity|default:1 }}" min="1">
                 </td>
                 <td>{{ cartdetail.product.product_price }}</td>
-                <td>{{ cartdetail.total_price|default:cartdetail.product.product_price }}</td>
+                <td>{{ cartdetail.total_price }}</td>
                 <td>
                     <a href="{% url 'cartdetail_delete' cartdetail.id %}" class="text-danger bi bi-trash-fill"></a>
                 </td>
@@ -70,7 +70,7 @@
 
         <div class="d-flex justify-content-between">
             <div class="inline">
-                <a href="{% url 'home' %}"
+                <a href="{% url 'allproduct' %}"
                     class="btn btn-primary rounded-0 bg-transparent text-dark fw-bold border-dark">Continue
                     Shopping</a>
             </div>
