@@ -162,7 +162,7 @@ Products
     <!-- Product Cards -->
     <section class="product-area py-2">
         {% for product in products %}
-        <div class="card-container"onclick="location.href='{% url 'product_itemView_detail' product.id %}'">
+        <div class="card-container" onclick="location.href=`{% url 'product_itemView_detail' product.id %}`">
             <div class="product-card">
                 {% if product.product_image %}
                 <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
@@ -181,7 +181,7 @@ Products
             </div>
         </div>
         {% empty %}
-        <p>No products found for this category.</p>
+        {% include "footer/notfound.html" %}
         {% endfor %}
 
     </section>

@@ -34,27 +34,27 @@ urlpatterns = [
     #
     #
     # D_Content [add function]
-    path("dashboard/add-product/", add_product, name="add_product"),
-    path("dashboard/add-category/", add_category, name="add_category"),
-    path("dashboard/add-sub-category/", add_sub_category, name="add_sub_category"),
-    path("dashboard/add-image-slider/", add_image_slider, name="add_image_slider"),
-    path("dashboard/add-cart/", add_cart, name="add_cart"),
-    path("dashboard/add-cart-item/", add_cart_item, name="add_cart_item"),
-    path("dashboard/add_header/", add_header, name="add_header"),
-    path("dashboard/add_otherdetail/", add_otherdetail, name="add_otherdetail"),
-    path("dashboard/add_advertisement/", add_advertisement, name="add_advertisement"),
+    path("add-product/", add_product, name="add_product"),
+    path("add-category/", add_category, name="add_category"),
+    path("add-sub-category/", add_sub_category, name="add_sub_category"),
+    path("add-image-slider/", add_image_slider, name="add_image_slider"),
+    path("add-cart/", add_cart, name="add_cart"),
+    path("add-cart-item/", add_cart_item, name="add_cart_item"),
+    path("add_header/", add_header, name="add_header"),
+    path("add_otherdetail/", add_otherdetail, name="add_otherdetail"),
+    path("add_advertisement/", add_advertisement, name="add_advertisement"),
     #
     #
     # D_Content [update function]
-    path('dashboard/update-product/<int:id>', update_product, name='update_product'),
-    path('dashboard/update-category/<int:id>', update_category, name='update_category'),
-    path('dashboard/update-sub-category/<int:id>', update_sub_category, name='update_sub_category'),
-    path('dashboard/update-image-slider/<int:id>', update_image_slider, name='update_image_slider'),
-    path('dashboard/update-cart/<int:id>', update_cart, name='update_cart'),
-    path('dashboard/update-cart-item/<int:id>', update_cart_item, name='update_cart_item'),
-    path('dashboard/update-header/<int:id>', update_header, name='update_header'),
-    path('dashboard/update-otherdetail/<int:id>', update_otherdetail, name='update_otherdetail'),
-    path('dashboard/update-advertisement/<int:id>', update_advertisement, name='update_advertisement'),
+    path('update-product/<int:id>', update_product, name='update_product'),
+    path('update-category/<int:id>', update_category, name='update_category'),
+    path('update-sub-category/<int:id>', update_sub_category, name='update_sub_category'),
+    path('update-image-slider/<int:id>', update_image_slider, name='update_image_slider'),
+    path('update-cart/<int:id>', update_cart, name='update_cart'),
+    path('update-cart-item/<int:id>', update_cart_item, name='update_cart_item'),
+    path('update-header/<int:id>', update_header, name='update_header'),
+    path('update-otherdetail/<int:id>', update_otherdetail, name='update_otherdetail'),
+    path('update-advertisement/<int:id>', update_advertisement, name='update_advertisement'),
     # 
     # 
     # 

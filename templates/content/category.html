@@ -41,7 +41,7 @@
             {% if category %}
                 <div class="list-group-item">
                     <i class="{{ category.category_icon }}"></i>
-                    <a href="#">{{ category.category_name }}</a>
+                    <a href="{% url 'filter_by_category' category.id %}">{{ category.category_name }}</a>
                 </div>
             {% else %}
                 <img src="{% static '/images/Empty Category.jpeg' %}" width="300px" height="500px" alt="">
