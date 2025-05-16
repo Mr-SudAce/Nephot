@@ -4,6 +4,13 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 
+
+class image_SliderModel(models.Model):
+    image = models.ImageField(upload_to="slider/", default="")
+
+    def __str__(self) -> str:
+        return f"{self.image}"
+    
 class CategoryModel(models.Model):
     category_icon = models.CharField(max_length=200, default="", blank=True)
     category_name = models.CharField(max_length=200, default="", unique=True)
@@ -14,7 +21,6 @@ class CategoryModel(models.Model):
     def __str__(self) -> str:
         return f"{self.category_name}"
 
-
 class Sub_CategoryModel(models.Model):
     sub_category_icon = models.CharField(max_length=200, default="", blank=True)
     sub_category_name = models.CharField(max_length=200, default="", unique=True)
@@ -24,14 +30,6 @@ class Sub_CategoryModel(models.Model):
 
     def __str__(self) -> str:
         return f"{self.sub_category_name} - {self.category}"
-
-
-class image_SliderModel(models.Model):
-    image = models.ImageField(upload_to="slider/", default="")
-
-    def __str__(self) -> str:
-        return f"{self.image}"
-
 
 class ProductModel(models.Model):
     product_category = models.ForeignKey(CategoryModel, related_name="productcategory", on_delete=models.CASCADE, default="")

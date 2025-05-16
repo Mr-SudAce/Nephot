@@ -17,7 +17,6 @@
 <div id="div-slider" class="col-12 col-sm-12 col-md-12 col-lg-2">
     {% for image in images %}
     {% if image.image %}
-
     <img src="{{ image.image.url }}" alt="Image" height="200px" width="100%">
     {% else %}
     <img id="img" src="{% static '/images/default_image.png' %}" alt="slide">

@@ -107,6 +107,56 @@ def home(request):
     return render(request, "home.html", context)
 
 
+
+def filter_by_subcategory(request, id):
+    fltr_subcategory = get_object_or_404(Sub_CategoryModel, id=id)
+    products = ProductModel.objects.filter(pro_sub_category=fltr_subcategory)
+
+    categories = CategoryModel.objects.prefetch_related('subcategories').all()
+    sub_categories = Sub_CategoryModel.objects.all()
+    sliders = image_SliderModel.objects.all()
+    header = HeaderModel.objects.last()
+    otherdetails = OtherDetailModel.objects.last()
+    advertisement = AdvertisementModel.objects.all()
+    allcategory = CategoryModel.objects.all()
+
+    if request.user.is_authenticated:
+        cart = CartModel.objects.filter(user=request.user, is_paid=False).first()
+        cart_items = CartItemModel.objects.filter(cart=cart) if cart else []
+    else:
+        cart_items = []
+
+    cart_items = [item for item in cart_items if item.product]
+    total_items_count = len(cart_items)
+    grand_total = sum(item.total_price() for item in cart_items)
+
+    context = {
+        "categories": categories,
+        "sub_categories": sub_categories,
+        "images": sliders,
+        "products": products,
+        "cart_item": cart_items,
+        "total_items_count": total_items_count,
+        "grand_total": grand_total,
+        "header": header,
+        "otherdetails": otherdetails,
+        "advertisement": advertisement,
+        "fltr_subcategory": fltr_subcategory,
+        'allcategory': allcategory,
+    }
+    return render(request, "content/cards.html", context)
+
+def show_allproducts(request):
+    products = ProductModel.objects.all()
+    categories = CategoryModel.objects.prefetch_related('subcategories').all()
+
+    context = {
+        'products': products,
+        'categories': categories,
+    }
+    return render(request, 'content/cards.html', context)
+
+
 # add to cart
 @login_required
 def add_to_cart(request, id):
@@ -235,18 +285,6 @@ def update_cart_quantity(request, id):
             return redirect("product_itemView_detail", id=id)
 
 
-def filter_by_subcategory(request, subcategory_id):
-    subcategory = get_object_or_404(Sub_CategoryModel, id=subcategory_id)
-    products = ProductModel.objects.filter(pro_sub_category=subcategory)
-    category = subcategory.category
-
-    return render(request, 'content/fashion.html', {
-        'category': category,
-        'subcategory': subcategory,
-        'products': products,
-    })
-
-
 
 # Dashboard
 def dashboard(request):
@@ -265,7 +303,6 @@ def add_product(request):
         template_url="Dashboard/D_Content/add_product.html",
         action_url="add_product"
     )
-
 def add_category(request):
     return handle_create(
         request=request,
@@ -275,7 +312,6 @@ def add_category(request):
         template_url="Dashboard/D_Content/add_category.html",
         action_url="add_category"        
     )
-
 def add_sub_category(request):
     return handle_create(
         request=request,
@@ -285,7 +321,6 @@ def add_sub_category(request):
         template_url="Dashboard/D_Content/add_sub_category.html", 
         action_url="add_sub_category"
     )
-
 def add_image_slider(request):
     return handle_create(
         request=request,
@@ -295,7 +330,6 @@ def add_image_slider(request):
         template_url="Dashboard/D_Content/add_image_slider.html",
         action_url="add_image_slider"
     )
-
 def add_cart(request):
     return handle_create(
         request=request,
@@ -305,7 +339,6 @@ def add_cart(request):
         template_url="Dashboard/D_Content/add_cart.html",
         action_url="add_cart"
     )
-
 def add_cart_item(request):
     return handle_create(
         request=request,
@@ -315,7 +348,6 @@ def add_cart_item(request):
         template_url="Dashboard/D_Content/add_cart_item.html",
         action_url="add_cart_item"
     )
-
 def add_header(request):
     return handle_create(
         request=request,
@@ -325,7 +357,6 @@ def add_header(request):
         template_url="Dashboard/D_Content/add_header.html",
         action_url="add_header"
     )
-
 def add_otherdetail(request):
     return handle_create(
         request=request,
@@ -335,7 +366,6 @@ def add_otherdetail(request):
         template_url="Dashboard/D_Content/add_otherdetail.html",
         action_url="add_otherdetail"
     )
-
 def add_advertisement(request):
     return handle_create(
         request=request,
@@ -345,7 +375,6 @@ def add_advertisement(request):
         template_url="Dashboard/D_Content/add_advertisement.html",
         action_url="add_advertisement"
     )
-
 # 
 # 
 # Update
@@ -369,7 +398,6 @@ def update_category(request, id):
         template_url="Dashboard/D_Content/add_category.html",
         action_url="update_category"
     )
-
 def update_sub_category(request, id):
     return handle_update(
         request=request,
@@ -380,7 +408,6 @@ def update_sub_category(request, id):
         template_url="Dashboard/D_Content/add_sub_category.html",
         action_url="update_sub_category"
     )
-
 def update_image_slider(request, id):
     return handle_update(
         request=request,
@@ -391,7 +418,6 @@ def update_image_slider(request, id):
         template_url="Dashboard/D_Content/add_image_slider.html",
         action_url="update_image_slider"
     )
-
 def update_cart(request, id):
     return handle_update(
         request=request,
@@ -402,7 +428,6 @@ def update_cart(request, id):
         template_url="Dashboard/D_Content/add_cart.html",
         action_url="update_cart"
     )
-
 def update_cart_item(request, id):
     return handle_update(
         request=request,
@@ -413,7 +438,6 @@ def update_cart_item(request, id):
         template_url="Dashboard/D_Content/add_cart_item.html",
         action_url="update_cart_item"
     )
-
 def update_header(request, id):
     return handle_update(
         request=request,
@@ -424,7 +448,6 @@ def update_header(request, id):
         template_url="Dashboard/D_Content/add_header.html",
         action_url="update_header"
     )
-
 def update_otherdetail(request, id):
     return handle_update(
         request=request,
@@ -435,7 +458,6 @@ def update_otherdetail(request, id):
         template_url="Dashboard/D_Content/add_otherdetail.html",
         action_url="update_otherdetail"
     )
-
 def update_advertisement(request, id):
     return handle_update(
         request=request,
@@ -466,7 +488,6 @@ def del_category(request, id):
         redirect_url="add_category",
         success_msg="Category Deleted Successfully :)"
     )
-
 def del_sub_category(request, id):
     return handle_delete(
         request=request,
@@ -475,7 +496,6 @@ def del_sub_category(request, id):
         redirect_url="add_sub_category",
         success_msg="Sub Category Deleted Successfully :)"
     )
-
 def del_image_slider(request, id):
     return handle_delete(
         request=request,
@@ -484,7 +504,6 @@ def del_image_slider(request, id):
         redirect_url="add_image_slider",
         success_msg="Image Slider Deleted Successfully :)"
     )
-
 def del_cart(request, id):
     return handle_delete(
         request=request,
@@ -493,7 +512,6 @@ def del_cart(request, id):
         redirect_url="add_cart",
         success_msg="Cart Deleted Successfully :)"
     )
-
 def del_cart_item(request, id):
     return handle_delete(
         request=request,
@@ -502,7 +520,6 @@ def del_cart_item(request, id):
         redirect_url="add_cart_item",
         success_msg="Cart Item Deleted Successfully :)"
     )
-
 def del_header(request, id):
     return handle_delete(
         request=request,
@@ -511,7 +528,6 @@ def del_header(request, id):
         redirect_url="add_header",
         success_msg="Header Deleted Successfully :)"
     )
-
 def del_otherdetail(request, id):
     return handle_delete(
         request=request,
@@ -520,7 +536,6 @@ def del_otherdetail(request, id):
         redirect_url="add_otherdetail",
         success_msg="Other Detail Deleted Successfully :)"
     )
-
 def del_advertisement(request, id):
     return handle_delete(
         request=request,
@@ -529,4 +544,8 @@ def del_advertisement(request, id):
         redirect_url="add_advertisement",
         success_msg="Advertisement Deleted Successfully :)"
     )
+
+
+
+
 

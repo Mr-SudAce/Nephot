@@ -21,7 +21,10 @@ urlpatterns = [
     #
     #
     #
-    path('subcategory/<int:subcategory_id>/', filter_by_subcategory, name='filter_by_subcategory'),
+    path("sub/<int:id>", filter_by_subcategory, name="filterbysubcate"),
+    path("sub/", show_allproducts, name="allproduct"),
+    #
+    #
     #
     # D_Content [add function]
     path("dashboard/add-product/", add_product, name="add_product"),
