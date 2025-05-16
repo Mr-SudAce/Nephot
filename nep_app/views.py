@@ -107,11 +107,16 @@ def home(request):
     return render(request, "home.html", context)
 
 
-
-def filter_by_subcategory(request, id):
-    fltr_subcategory = get_object_or_404(Sub_CategoryModel, id=id)
-    products = ProductModel.objects.filter(pro_sub_category=fltr_subcategory)
-
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+def get_common_context(request, products=None, extra_context=None):
     categories = CategoryModel.objects.prefetch_related('subcategories').all()
     sub_categories = Sub_CategoryModel.objects.all()
     sliders = image_SliderModel.objects.all()
@@ -134,27 +139,71 @@ def filter_by_subcategory(request, id):
         "categories": categories,
         "sub_categories": sub_categories,
         "images": sliders,
-        "products": products,
         "cart_item": cart_items,
         "total_items_count": total_items_count,
         "grand_total": grand_total,
         "header": header,
         "otherdetails": otherdetails,
         "advertisement": advertisement,
-        "fltr_subcategory": fltr_subcategory,
-        'allcategory': allcategory,
+        "allcategory": allcategory,
     }
+
+    if products is not None:
+        context["products"] = products
+
+    if extra_context:
+        context.update(extra_context)
+
+    return context
+
+
+def filter_by_subcategory(request, id):
+    fltr_subcategory = get_object_or_404(Sub_CategoryModel, id=id)
+    products = ProductModel.objects.filter(pro_sub_category=fltr_subcategory)
+    context = get_common_context(
+        request,
+        products=products,
+        extra_context={"fltr_subcategory": fltr_subcategory}
+    )
     return render(request, "content/cards.html", context)
 
-def show_allproducts(request):
-    products = ProductModel.objects.all()
-    categories = CategoryModel.objects.prefetch_related('subcategories').all()
 
-    context = {
-        'products': products,
-        'categories': categories,
-    }
-    return render(request, 'content/cards.html', context)
+def filter_by_category(request, id):
+    fltr_category = get_object_or_404(CategoryModel, id=id)
+    products = ProductModel.objects.filter(product_category=fltr_category)
+    context = get_common_context(
+        request,
+        products=products,
+        extra_context={"fltr_category": fltr_category}
+    )
+    return render(request, "content/cards.html", context)
+
+
+def show_allproducts(request, category_id=None):
+    if category_id:
+        fltr_category = get_object_or_404(CategoryModel, id=category_id)
+        products = ProductModel.objects.filter(product_category=fltr_category)
+        extra_context = {"fltr_category": fltr_category}
+    else:
+        products = ProductModel.objects.all()
+        extra_context = {}
+
+    context = get_common_context(request, products=products, extra_context=extra_context)
+    return render(request, "content/cards.html", context)   
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+# 
+
+
+
+
 
 
 # add to cart
@@ -182,6 +231,7 @@ def add_to_cart(request, id):
             }
         request.session["cart"] = cart
     return redirect("home")
+
 
 
 
