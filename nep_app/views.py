@@ -190,20 +190,6 @@ def show_allproducts(request, category_id=None):
 
     context = get_common_context(request, products=products, extra_context=extra_context)
     return render(request, "content/cards.html", context)   
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-# 
-
-
-
-
 
 
 # add to cart
@@ -231,8 +217,6 @@ def add_to_cart(request, id):
             }
         request.session["cart"] = cart
     return redirect("home")
-
-
 
 
 def delete_cart_item(request, cart_item_id):

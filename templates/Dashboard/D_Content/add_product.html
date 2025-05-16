@@ -60,9 +60,9 @@
             <tbody>
                 {% for prod in data %}
                 <tr>
-                    <td class="align-middle">{{ prod.product_name }}</td>
+                    <td class="align-middle">{{ prod.product_name|truncatewords:2 }}</td>
                     <td class="align-middle">{{ prod.product_category }}</td>
-                    <td class="align-middle">{{ prod.product_description }}</td>
+                    <td class="align-middle">{{ prod.product_description|truncatewords:3 }}</td>
                     <td class="align-middle">${{ prod.product_price }}</td>
                     <td class="align-middle">{{ prod.product_stock }}</td>
                     <td class="align-middle">
@@ -76,8 +76,8 @@
                     </td>
                     <td class="align-middle">{{ prod.pro_sub_category }}</td>
                     <td>
-                        <a href="{% url 'update_product' prod.id %}" class="btn btn-warning">Update</a>
-                        <a href="{% url 'del_product' prod.id %}"class="btn btn-danger">Delete</a>
+                        <a href="{% url 'update_product' prod.id %}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>
+                        <a href="{% url 'del_product' prod.id %}"class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                     </td>
                 </tr>
                 {% endfor %}
