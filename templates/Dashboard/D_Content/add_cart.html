@@ -12,6 +12,10 @@
         <th><label for="cart_status">Status</label></th>
         <td>{{form.is_paid}}</td>
     </tr>
+    <tr>
+        <th><label for="cart_status">Active</label></th>
+        <td>{{form.is_active}}</td>
+    </tr>
 </table>
 
 <button type="submit" name="submit" class="btn btn-success">
@@ -24,6 +28,7 @@
             <tr>
                 <th>Cart</th>
                 <th>Status</th>
+                <th>Active</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -32,6 +37,7 @@
             <tr>
                 <td class="align-middle">{{ crt.user }}</td>
                 <td class="align-middle">{{ crt.is_paid }}</td>
+                <td class="align-middle">{{ crt.is_active }}</td>
                 <td>
                     <a href="{% url 'del_cart' crt.id %}" class="btn btn-danger"><i class="fas fa-trash-alt"></i></a>
                     <a href="{% url 'update_cart' crt.id %}" class="btn btn-warning"><i class="fas fa-pencil-alt"></i></a>

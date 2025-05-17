@@ -192,7 +192,8 @@
                         <a id="see_all" href="{% url 'cart_Detail' %}">See all</a>
                     </div>
                     <div class="d-flex position-relative gap-2" style="align-items: center;">
-                        <button type="submit" class="chkot btn btn-outline-success m-0">CheckOut</button>
+                        
+                        <a href="{% url 'checkout' %}" class="chkot btn btn-outline-success m-0">Checkout</a>
                         <div class="d-flex flex-column">
                             <span class="text-dark text-start">Total: </span>
                             <span class="text-success">Rs. {{ grand_total }}</span>

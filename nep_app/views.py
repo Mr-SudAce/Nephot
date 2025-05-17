@@ -150,7 +150,7 @@ def show_allproducts(request, category_id=None):
 # add to cart
 @login_required
 def add_to_cart(request, id):
-    product = ProductModel.objects.get(id=id)
+    product = get_object_or_404(ProductModel, id=id)
 
     if request.user.is_authenticated:
         cart, _ = CartModel.objects.get_or_create(user=request.user, is_paid=False)
@@ -160,20 +160,20 @@ def add_to_cart(request, id):
             cart_item.save()
         else:
             CartItemModel.objects.create(cart=cart, product=product, quantity=1)
+        return redirect(
+            request.META.get("HTTP_REFERER", "/")
+        )  # ✅ Fix: Always return a response
     else:
         cart = request.session.get("cart", {})
-
         if str(id) in cart:
-            cart[str(id)]["quantity"] += 0
+            cart[str(id)]["quantity"] += 1
         else:
             cart[str(id)] = {
                 "product_id": id,
                 "quantity": 1,
             }
         request.session["cart"] = cart
-        context = {"product": product}
         return redirect(request.META.get("HTTP_REFERER", "/"))
-    return render(request, "content/cart.html", context)
 
 
 def delete_cart_item(request, id):
@@ -287,15 +287,21 @@ def update_cart_quantity(request, id):
 @login_required
 @transaction.atomic
 def checkout(request):
-    cart = get_object_or_404(CartModel, user=request.user, is_active=True)
+    cart = CartModel.objects.filter(user=request.user, is_active=True).first()
+
+    if not cart:
+        return redirect("cart_Detail")
+
     cart_items = CartItemModel.objects.filter(cart=cart)
 
     if not cart_items.exists():
-        return redirect('cart_empty')  # Or show a message
+        return redirect("cart_Detail")  # Or use a separate 'cart_empty' view
 
-    total_price = sum(float(item.product.product_price) * item.quantity for item in cart_items)
+    total_price = sum(
+        float(item.product.product_price) * item.quantity for item in cart_items
+    )
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = ShippingForm(request.POST)
         if form.is_valid():
             shipping = form.save(commit=False)
@@ -307,8 +313,8 @@ def checkout(request):
                 user=request.user,
                 shipping_info=shipping,
                 total_price=total_price,
-                payment_method='COD',
-                status='Confirmed'
+                payment_method="COD",
+                status="Confirmed",
             )
 
             # Create order items
@@ -317,10 +323,10 @@ def checkout(request):
                     order=order,
                     product=item.product,
                     quantity=item.quantity,
-                    price=item.product.product_price
+                    price=item.product.product_price,
                 )
 
-                # Optional: Update stock
+                # Update stock
                 item.product.product_stock -= item.quantity
                 item.product.save()
 
@@ -329,23 +335,22 @@ def checkout(request):
             cart.save()
             cart_items.delete()
 
-            return redirect('order_success', order_id=order.id)
+            return redirect("order_success", order_id=order.id)
     else:
         form = ShippingForm()
 
-    return render(request, 'content/checkout.html', {
-        'form': form,
-        'cart_items': cart_items,
-        'total_price': total_price
-    })
+    return render(
+        request,
+        "content/checkout.html",
+        {"form": form, "cart_items": cart_items, "total_price": total_price},
+    )
+
 
 @login_required
 def order_success(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
 
-    return render(request, 'content/order_success.html', {
-        'order': order
-    })
+    return render(request, "content/order_success.html", {"order": order})
 
 
 # Dashboard

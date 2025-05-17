@@ -273,7 +273,8 @@ Product Detail
         <div class="col-lg-12">
             <div class="d-flex flex-wrap gap-4 justify-content-start">
                 {% for product in similarproduct %}
-                <div class="card col-lg-2 d-flex justify-content-center"onclick="location.href='{% url 'product_itemView_detail' product.id %}'">
+                <div class="card col-lg-2 d-flex justify-content-center"
+                    onclick="location.href=`{% url 'product_itemView_detail' product.id %}`">
                     <div class="pic">
                         {% if product.product_image %}
                         <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
@@ -285,6 +286,7 @@ Product Detail
                         <div class="categ position-absolute" style="top: 0;">
                             <p>{{ product.pro_sub_category }}</p>
                         </div>
+                        <p class="m-0">{{ product.product_stock }}</p>
                         <h5 class="fs-3">{{ product.product_name }}</h5>
                         <p class="m-0">{{ product.product_description }}</p>
                         <div class="d-flex gap-2">
