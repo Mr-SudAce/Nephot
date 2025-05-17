@@ -1,0 +1,10 @@
+<div class="d-flex">
+    <form action="{% url 'search_query' %}" method="get" class="d-flex">
+        <input class="form-control rounded-0 m-auto border-gray" style="width: 400px;" type="search" name="search_query"
+            id="search_query" placeholder="Searching For.........">
+        <button type="submit"
+            class="btn btn-danger border border-1 border-danger rounded-0 align-items-center m-auto d-flex">
+            <i class="bi bi-search"></i>
+        </button>
+    </form>
+</div>

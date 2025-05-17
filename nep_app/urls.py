@@ -18,6 +18,7 @@ urlpatterns = [
     # productdetail
     path("product-detail/<int:id>/",product_itemView_detail, name="product_itemView_detail"),
     path("update-cart/<int:id>/", update_cart_quantity, name="update_cart_quantity"),
+    path("delete-crt/<int:id>/", delete_cart_item, name="delete_cart_item"),
     #
     #
     #

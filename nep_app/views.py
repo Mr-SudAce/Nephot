@@ -66,7 +66,6 @@ def user_logout(request):
 
 # Home
 @login_required
-
 def home(request):
     products = ProductModel.objects.all()
     context = get_common_context(request, products=products)
@@ -171,14 +170,21 @@ def add_to_cart(request, id):
                 "quantity": 1,
             }
         request.session["cart"] = cart
-    return redirect("home")
+    return redirect(request.META.get("HTTP_REFERER", "/"))
 
 
-def delete_cart_item(request, cart_item_id):
+# def delete_cart_item(request, id):
+#     if request.method == "POST":
+#         cart_item = get_object_or_404(CartItemModel, id=id)
+#         cart_item.delete()
+#         return redirect(request.META.get("HTTP_REFERER", "/"))
+
+def delete_cart_item(request, id):
     if request.method == "POST":
-        cart_item = get_object_or_404(CartItemModel, id=cart_item_id)
+        cart_item = get_object_or_404(CartItemModel, id=id)
         cart_item.delete()
-        return redirect("/")
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+    return HttpResponseNotAllowed(["POST"])
 
 
 def cartdetail_delete(request, cart_det_id):
@@ -206,7 +212,9 @@ def cart_detail(request):
     total_items_count = (
         len(cart_items) if isinstance(cart_items, list) else cart_items.count()
     )
-    grand_total = sum(float(item.total_price()) if item.product else 0 for item in cart_items)
+    grand_total = sum(
+        float(item.total_price()) if item.product else 0 for item in cart_items
+    )
     context = {
         "cartdet": cart_det,
         "total_items_count": total_items_count,

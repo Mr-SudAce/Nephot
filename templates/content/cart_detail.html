@@ -2,6 +2,12 @@
 
 {% load static %}
 
+
+
+{% block title %}
+Cart
+{% endblock %}
+
 {% block cart_detail %}
 <style>
     #delete {
@@ -20,7 +26,6 @@
         border-right: none;
     }
 </style>
-
 
 <h1>Cart Detail</h1>
 <div class="col-lg-12">
@@ -71,8 +76,8 @@
         <div class="d-flex justify-content-between">
             <div class="inline">
                 <a href="{% url 'allproduct' %}"
-                    class="btn btn-primary rounded-0 bg-transparent text-dark fw-bold border-dark">Continue
-                    Shopping</a>
+                    class="btn btn-primary rounded-0 bg-transparent text-dark fw-bold border-dark">
+                    Continue Shopping</a>
             </div>
             <div class="text-center d-flex justify-content-end ">
                 <button type="submit"

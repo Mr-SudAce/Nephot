@@ -170,7 +170,7 @@ Products
                 <img src="{% static 'images/default_image.png' %}" alt="Default image">
                 {% endif %}
                 <div class="product-details">
-                    <h5>{{ product.product_name }}</h5>
+                    <h5>{{ product.product_name|truncatewords:3.2 }}</h5>
                     <p>{{ product.product_description|truncatewords:3 }}</p>
                     <p>
                         <span class="price">Rs.800</span>
