@@ -1,0 +1,17 @@
+<h2>🎉 Order Placed Successfully!</h2>
+
+<p>Thank you, {{ request.user.username }}!</p>
+<p>Your order ID is <strong>#{{ order.id }}</strong></p>
+<p>We’ll ship your items to:</p>
+
+<ul>
+  <li>{{ order.shipping_info.address }}</li>
+  <li>{{ order.shipping_info.city }} - {{ order.shipping_info.postal_code }}</li>
+  <li>📞 {{ order.shipping_info.phone_number }}</li>
+</ul>
+
+<p><strong>Total Paid:</strong> ₹{{ order.total_price }}</p>
+<p><strong>Payment Method:</strong> {{ order.payment_method }}</p>
+<p><strong>Status:</strong> {{ order.status }}</p>
+
+<a href="{% url 'home' %}">⬅️ Back to Home</a>

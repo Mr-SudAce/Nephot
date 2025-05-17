@@ -71,3 +71,8 @@ class AdvertisementForm(forms.ModelForm):
     class Meta:
         model = AdvertisementModel
         fields = "__all__"
+
+class ShippingForm(forms.ModelForm):
+    class Meta:
+        model = ShippingInfoModel
+        fields = ['address', 'city', 'postal_code', 'phone_number']

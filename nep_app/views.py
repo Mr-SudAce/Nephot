@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.shortcuts import *
 from django.conf import settings
 from .models import *
+from django.db import transaction
 from .forms import *
 from django.urls import *
 from handler.ViewHandler import *
@@ -170,21 +171,16 @@ def add_to_cart(request, id):
                 "quantity": 1,
             }
         request.session["cart"] = cart
-    return redirect(request.META.get("HTTP_REFERER", "/"))
+        context = {"product": product}
+        return redirect(request.META.get("HTTP_REFERER", "/"))
+    return render(request, "content/cart.html", context)
 
-
-# def delete_cart_item(request, id):
-#     if request.method == "POST":
-#         cart_item = get_object_or_404(CartItemModel, id=id)
-#         cart_item.delete()
-#         return redirect(request.META.get("HTTP_REFERER", "/"))
 
 def delete_cart_item(request, id):
     if request.method == "POST":
         cart_item = get_object_or_404(CartItemModel, id=id)
         cart_item.delete()
         return redirect(request.META.get("HTTP_REFERER", "/"))
-    return HttpResponseNotAllowed(["POST"])
 
 
 def cartdetail_delete(request, cart_det_id):
@@ -286,6 +282,70 @@ def update_cart_quantity(request, id):
                 cart_item.quantity = quantity
                 cart_item.save()
             return redirect("product_itemView_detail", id=id)
+
+
+@login_required
+@transaction.atomic
+def checkout(request):
+    cart = get_object_or_404(CartModel, user=request.user, is_active=True)
+    cart_items = CartItemModel.objects.filter(cart=cart)
+
+    if not cart_items.exists():
+        return redirect('cart_empty')  # Or show a message
+
+    total_price = sum(float(item.product.product_price) * item.quantity for item in cart_items)
+
+    if request.method == 'POST':
+        form = ShippingForm(request.POST)
+        if form.is_valid():
+            shipping = form.save(commit=False)
+            shipping.user = request.user
+            shipping.save()
+
+            # Create order
+            order = Order.objects.create(
+                user=request.user,
+                shipping_info=shipping,
+                total_price=total_price,
+                payment_method='COD',
+                status='Confirmed'
+            )
+
+            # Create order items
+            for item in cart_items:
+                OrderItem.objects.create(
+                    order=order,
+                    product=item.product,
+                    quantity=item.quantity,
+                    price=item.product.product_price
+                )
+
+                # Optional: Update stock
+                item.product.product_stock -= item.quantity
+                item.product.save()
+
+            # Clear cart
+            cart.is_active = False
+            cart.save()
+            cart_items.delete()
+
+            return redirect('order_success', order_id=order.id)
+    else:
+        form = ShippingForm()
+
+    return render(request, 'content/checkout.html', {
+        'form': form,
+        'cart_items': cart_items,
+        'total_price': total_price
+    })
+
+@login_required
+def order_success(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+
+    return render(request, 'content/order_success.html', {
+        'order': order
+    })
 
 
 # Dashboard

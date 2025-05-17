@@ -33,6 +33,20 @@ urlpatterns = [
     # 
     #
     #
+    # 
+    #
+    #
+    # 
+    path('checkout/', checkout, name='checkout'),
+    path('order-success/<int:order_id>/', order_success, name='order_success'),
+    #
+    #
+    # 
+    #
+    #
+    # 
+    #
+    #
     #
     # D_Content [add function]
     path("add-product/", add_product, name="add_product"),
